@@ -4,11 +4,12 @@ import { FaClipboardList } from "react-icons/fa";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { FiSettings } from "react-icons/fi";
 import { AiOutlineMenuFold } from "react-icons/ai";
+import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
 
 const Sidebar = () => {
-  const [active, setActive] = React.useState<String>("");
-  const [openMenuPan, setOpenMenuPan] = React.useState<Boolean>(false);
+  const [active, setActive] = React.useState<String>("dashboard");
+  const [openMenuPan, setOpenMenuPan] = React.useState<Boolean>(true);
 
   const dashboardMenu = [
     {
@@ -38,7 +39,7 @@ const Sidebar = () => {
       {/* Main container */}
       <div
         className={`h-screen ${
-          openMenuPan ? "w-[300px]" : "w-[60px]"
+          openMenuPan ? "w-[250px]" : "w-[60px]"
         } bg-pinky py-8 flex flex-col justify-between ease-in-out transition-all duration-500`}
       >
         {/* Avatar and menu container */}
@@ -49,15 +50,15 @@ const Sidebar = () => {
         >
           {openMenuPan && <p className="text-white text-4xl">ME</p>}
           {openMenuPan ? (
-            <AiOutlineMenuFold
-              size={50}
+            <AiOutlineMenuUnfold
+              size={25}
               color="white"
               onClick={() => setOpenMenuPan(!openMenuPan)}
               className="cursor-pointer"
             />
           ) : (
             <AiOutlineMenuFold
-              size={40}
+              size={25}
               color="white"
               onClick={() => setOpenMenuPan(!openMenuPan)}
               className="cursor-pointer"
@@ -67,7 +68,7 @@ const Sidebar = () => {
         {/* dashboard menu items */}
         <div className="w-full basis-2/3">
           <ul
-            className={`flex flex-col gap-8 text-white text-xl ${
+            className={`flex flex-col text-white text-[14px] font-bold ${
               openMenuPan ? "pl-4" : ""
             } cursor-pointer`}
           >
@@ -93,7 +94,7 @@ const Sidebar = () => {
         </div>
         {/* logout */}
         <div
-          className={`flex justify-between items-center text-white text-2xl cursor-pointer ${
+          className={`flex justify-between items-center text-white text-[14px] font-bold cursor-pointer ${
             openMenuPan ? "px-8" : "px-4"
           }`}
         >
