@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        pinky: "#FF274D",
+        pinky: "#FF355E",
       },
     },
   },
