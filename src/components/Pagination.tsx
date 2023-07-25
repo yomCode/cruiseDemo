@@ -35,11 +35,11 @@ const PaginatedData = <T,>({
 
       <ReactPaginate
         breakLabel="..."
-        nextLabel="next >"
+        nextLabel="Next >"
         onPageChange={handlePageClick}
         pageRangeDisplayed={2}
         pageCount={pageCount}
-        previousLabel="< previous"
+        previousLabel="< Prev"
         renderOnZeroPageCount={null}
         activeClassName="active_page"
         className="w-[400px] font-bold flex justify-center gap-2 mt-4 cursor-pointer"
