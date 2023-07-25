@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setOrders } from "../store/OrderSlice";
+import { useSelector } from "react-redux";
 import PaginatedData from "../components/Pagination";
+import { useFetch } from "../hooks/useFetch";
 
 export interface OrderProps {
   id: number;
@@ -14,27 +13,14 @@ export interface OrderProps {
 }
 
 const Orders = () => {
-  const dispatch = useDispatch<any>();
   const [searchValue, setSearchValue] = useState<string>("");
   const orders = useSelector((state: any) => state?.orders?.Orders);
 
   const [filteredOrders, setFilteredOrders] = useState<OrderProps[]>([]);
   const [filterMethod, setFilterMethod] = useState<string>("date");
   const [filterValue, setFilterValue] = useState<string>("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get("http://localhost:3500/orders");
-        dispatch(setOrders(res.data));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [dispatch]);
-
-  console.log({ orders });
+  const ordersApi = process.env.REACT_APP_ORDERS_API as string;
+  useFetch(ordersApi);
 
   const columns = [
     {
@@ -114,7 +100,7 @@ const Orders = () => {
             id="default-search"
             name="searchInput"
             onChange={onSearchInputChange}
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 outline-none"
+            className="w-full px-4 py-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 outline-none"
             placeholder="Search Customer, Product, Status..."
             required
           />
@@ -126,7 +112,7 @@ const Orders = () => {
             <select
               value={filterMethod}
               onChange={(e) => setFilterMethod(e.target.value)}
-              className="outline-none border-2 border-[gray] w-[150px] h-[40px] rounded-md"
+              className="p-2 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 outline-none"
             >
               <option value="date">Date</option>
               <option value="customer">Customer</option>
@@ -146,7 +132,7 @@ const Orders = () => {
               type="search"
               value={filterValue}
               onChange={(e) => setFilterValue(e.target.value)}
-              className="outline-none border-2 border-[gray] w-[300px] h-[40px] rounded-md p-2"
+              className="w-[300px] p-2 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 outline-none"
             />
           </div>
         </div>

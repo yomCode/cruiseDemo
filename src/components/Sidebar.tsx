@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { AiOutlineDashboard } from "react-icons/ai";
-import { FaClipboardList } from "react-icons/fa";
-import { AiOutlineTransaction } from "react-icons/ai";
-import { FiSettings } from "react-icons/fi";
+import { DashboardMenu } from "../constants";
+
 import { AiOutlineMenuFold } from "react-icons/ai";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
@@ -17,32 +15,6 @@ const Sidebar = () => {
   const path = useLocation()?.pathname.replaceAll("/", "");
   const formattedPathName = path === "home" ? "dashboard" : path?.toLowerCase();
 
-  const dashboardMenu = [
-    {
-      name: "Dashboard",
-      icon: <AiOutlineDashboard size={30} />,
-      data: "",
-      path: "/home",
-    },
-    {
-      name: "Orders",
-      icon: <FaClipboardList size={30} />,
-      data: 5,
-      path: "/orders",
-    },
-    {
-      name: "Transactions",
-      icon: <AiOutlineTransaction size={30} />,
-      data: 5,
-      path: "/transactions",
-    },
-    {
-      name: "Settings",
-      icon: <FiSettings size={30} />,
-      data: "",
-      path: "/settings",
-    },
-  ];
   useEffect(() => {
     setActive(formattedPathName as Tabs);
     // eslint-disable-next-line
@@ -86,7 +58,7 @@ const Sidebar = () => {
               openMenuPan ? "pl-4" : ""
             } cursor-pointer`}
           >
-            {dashboardMenu?.map((item) => (
+            {DashboardMenu()?.map((item) => (
               <Link key={item?.name.toLowerCase()} to={item?.path}>
                 <li
                   onClick={() => setActive(formattedPathName as Tabs)}

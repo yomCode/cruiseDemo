@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { useTable } from "react-table";
 
 interface OrderProps {
   id: number;
