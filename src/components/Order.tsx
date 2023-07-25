@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import axios from "axios";
-
-interface OrderProps {
+import React from "react";
+import { useFetchOrder } from "../hooks/useFetchOrder";
+export interface OrderProps {
   id: number;
   name: string;
   customer: string;
@@ -10,29 +9,45 @@ interface OrderProps {
   status: string;
 }
 
-const Orders = () => {
-  const [orders, setOrders] = React.useState<OrderProps[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      axios.get("http://localhost:3500/orders").then((res) => {
-        console.log(res.data);
-        setOrders(res.data);
-      });
-    };
-    fetchData();
-  }, []);
+const Order = (orderId: any) => {
+  const ordersApi = process.env.REACT_APP_ORDER_API as string;
+  const { data } = useFetchOrder(`${ordersApi}${orderId?.orderId}`);
+  console.log(data);
 
   return (
-    <div>
-      {orders.map((order) => {
+    <div className="w-[500px] h-[400px] bg-white flex items-center justify-center rounded-md shadow-lg">
+      {data?.map((order: any) => {
         return (
-          <div key={order?.id} className="flex ">
-            <p>{order?.name}</p>
-            <p>{order?.customer}</p>
-            <p>{order?.quantity}</p>
-            <p>{order?.date}</p>
-            <p>{order?.status}</p>
+          <div key={order?.id} className="flex flex-col gap-4">
+            <div>
+              <h1 className="text-2xl font-bold">ORDER DETAILS</h1>
+            </div>
+            <div className="flex flex-col items-start">
+              <p>
+                {" "}
+                <span className="text-xl font-semibold">
+                  Product Name:
+                </span>{" "}
+                {order?.productName}
+              </p>
+              <p>
+                <span className="text-xl font-semibold">Customer Name:</span>{" "}
+                {order?.customerName}
+              </p>
+              <p>
+                <span className="text-xl font-semibold">Order Qty:</span>{" "}
+                {order?.quantity}
+              </p>
+              <p>
+                <span className="text-xl font-semibold">Order Date:</span>{" "}
+                {order?.date}
+              </p>
+              <p>
+                <span className="text-xl font-semibold">Order Status:</span>{" "}
+                {order?.status.slice(0, 1).toUpperCase() +
+                  order?.status.slice(1)}
+              </p>
+            </div>
           </div>
         );
       })}
@@ -40,4 +55,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default Order;

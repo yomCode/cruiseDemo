@@ -1,11 +1,9 @@
-// export {};
-
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setOrders } from "../store/OrderSlice";
 
-export const useFetch = (url: string) => {
+export const useFetchOrders = (url: string) => {
   const dispatch = useDispatch<any>();
 
   useEffect(() => {

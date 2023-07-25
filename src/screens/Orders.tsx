@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import PaginatedData from "../components/Pagination";
-import { useFetch } from "../hooks/useFetch";
+import { useFetchOrders } from "../hooks/useFetchOrders";
+
+import Order from "../components/Order";
 
 export interface OrderProps {
   id: number;
@@ -13,14 +15,16 @@ export interface OrderProps {
 }
 
 const Orders = () => {
-  const [searchValue, setSearchValue] = useState<string>("");
   const orders = useSelector((state: any) => state?.orders?.Orders);
-
+  const [searchValue, setSearchValue] = useState<string>("");
   const [filteredOrders, setFilteredOrders] = useState<OrderProps[]>([]);
   const [filterMethod, setFilterMethod] = useState<string>("date");
   const [filterValue, setFilterValue] = useState<string>("");
+  const [clickedOrderId, setClickedOrderId] = useState<number>(0);
+  const [showOrderDetails, setShowOrderDetails] = useState<boolean>(false);
+
   const ordersApi = process.env.REACT_APP_ORDERS_API as string;
-  useFetch(ordersApi);
+  useFetchOrders(ordersApi);
 
   const columns = [
     {
@@ -73,6 +77,11 @@ const Orders = () => {
     });
     setFilteredOrders(filtered);
   }, [orders, filterMethod, filterValue]);
+
+  const handleClickOrder = (orderId: number) => {
+    setClickedOrderId(orderId);
+    setShowOrderDetails(!showOrderDetails);
+  };
 
   return (
     <div className="w-full p-5">
@@ -146,64 +155,50 @@ const Orders = () => {
               })}
             </tr>
           </thead>
-          <tbody>
-            {/* {formattedData?.map((order) => {
-              return (
-                <tr
-                  key={order?.id}
-                  className="text-[12px] font-semibold rounded-md shadow-md h-[60px] hover:scale-[1.02] even:bg-[#dedede] cursor-pointer"
-                >
-                  <td>{order?.id}</td>
-                  <td>{order?.date}</td>
-                  <td>{order?.productName}</td>
-                  <td>{order?.customerName}</td>
-                  <td className="h-[60px] flex justify-center items-center">
-                    <p
-                      className={`${
-                        order?.status === "pending"
-                          ? "text-[red]"
-                          : order?.status === "shipped"
-                          ? "text-[purple]"
-                          : order?.status === "delivered"
-                          ? "text-[green]"
-                          : ""
-                      }`}
-                    >
-                      {order?.status}
-                    </p>
-                  </td>
-                </tr>
-              );
-            })} */}
+          <tbody className="relative">
             <PaginatedData<OrderProps>
               itemsPerPage={10}
               items={formattedData}
               renderItem={(order: OrderProps) => {
                 return (
-                  <tr
-                    key={order?.id}
-                    className="w-full text-[12px] font-semibold rounded-md shadow-md hover:scale-[1.02] even:bg-[#dedede] cursor-pointer"
-                  >
-                    <td>{order?.id}</td>
-                    <td>{order?.date}</td>
-                    <td>{order?.productName}</td>
-                    <td>{order?.customerName}</td>
-                    <td className="h-[50px] flex justify-center items-center">
-                      <p
-                        className={`${
-                          order?.status === "pending"
-                            ? "text-[red]"
-                            : order?.status === "shipped"
-                            ? "text-[purple]"
-                            : order?.status === "delivered"
-                            ? "text-[green]"
-                            : ""
-                        }`}
-                      >
-                        {order?.status}
-                      </p>
-                    </td>
-                  </tr>
+                  <>
+                    <tr
+                      key={order?.id}
+                      onClick={() => handleClickOrder(order?.id)}
+                      className="w-full text-[12px] font-semibold rounded-md shadow-md hover:scale-[1.02] even:bg-[#dedede] cursor-pointer"
+                    >
+                      <td>{order?.id}</td>
+                      <td>{order?.date}</td>
+                      <td>{order?.productName}</td>
+                      <td>{order?.customerName}</td>
+                      <td className="h-[50px] flex justify-center items-center">
+                        <p
+                          className={`${
+                            order?.status === "pending"
+                              ? "text-[red]"
+                              : order?.status === "shipped"
+                              ? "text-[purple]"
+                              : order?.status === "delivered"
+                              ? "text-[green]"
+                              : ""
+                          }`}
+                        >
+                          {order?.status}
+                        </p>
+                      </td>
+                    </tr>
+                    {showOrderDetails && (
+                      <div className="w-full h-[calc(100vh-320px)] flex flex-col justify-center items-center bg-[#dbdbdb] absolute top-0 left-0 opacity-25">
+                        <Order orderId={clickedOrderId} />
+                        <button
+                          onClick={() => setShowOrderDetails(!showOrderDetails)}
+                          className="bg-pinky py-2 px-4 rounded-md text-white font-bold mt-4 hover:bg-[#f79cae]"
+                        >
+                          Close X
+                        </button>
+                      </div>
+                    )}
+                  </>
                 );
               }}
             />
