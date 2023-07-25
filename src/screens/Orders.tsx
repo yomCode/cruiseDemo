@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrders } from "../store/OrderSlice";
+import PaginatedData from "../components/Pagination";
 
 export interface OrderProps {
   id: number;
@@ -120,7 +121,7 @@ const Orders = () => {
         </div>
         <div className="flex justify-between items-center w-full max-w-[600px] p-4">
           {/* Filter method */}
-          <div className="flex flex-col">
+          <div className="flex flex-col text-[12px]">
             <label>Filter By: </label>
             <select
               value={filterMethod}
@@ -132,7 +133,7 @@ const Orders = () => {
               <option value="status">Status</option>
             </select>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col text-[12px]">
             <label>
               {filterMethod === "customer"
                 ? "Customer"
@@ -153,14 +154,14 @@ const Orders = () => {
       <div className="w-full h-[calc(100vh-200px)] overflow-auto">
         <table className="w-full text-center table-fixed">
           <thead>
-            <tr className="rounded-md shadow-md h-[60px]">
+            <tr className="rounded-md shadow-md h-[40px]">
               {columns?.map((column) => {
                 return <th key={column?.header}>{column?.header}</th>;
               })}
             </tr>
           </thead>
           <tbody>
-            {formattedData?.map((order) => {
+            {/* {formattedData?.map((order) => {
               return (
                 <tr
                   key={order?.id}
@@ -187,7 +188,39 @@ const Orders = () => {
                   </td>
                 </tr>
               );
-            })}
+            })} */}
+            <PaginatedData<OrderProps>
+              itemsPerPage={10}
+              items={formattedData}
+              renderItem={(order: OrderProps) => {
+                return (
+                  <tr
+                    key={order?.id}
+                    className="w-full text-[12px] font-semibold rounded-md shadow-md hover:scale-[1.02] even:bg-[#dedede] cursor-pointer"
+                  >
+                    <td>{order?.id}</td>
+                    <td>{order?.date}</td>
+                    <td>{order?.productName}</td>
+                    <td>{order?.customerName}</td>
+                    <td className="h-[50px] flex justify-center items-center">
+                      <p
+                        className={`${
+                          order?.status === "pending"
+                            ? "text-[red]"
+                            : order?.status === "shipped"
+                            ? "text-[purple]"
+                            : order?.status === "delivered"
+                            ? "text-[green]"
+                            : ""
+                        }`}
+                      >
+                        {order?.status}
+                      </p>
+                    </td>
+                  </tr>
+                );
+              }}
+            />
           </tbody>
         </table>
       </div>
