@@ -28,7 +28,7 @@ const Orders = () => {
 
   const columns = [
     {
-      header: "ID",
+      header: "Order ID",
     },
     {
       header: "Date",
@@ -217,7 +217,8 @@ const Orders = () => {
                 <div className="w-full h-[80px] flex flex-col justify-between text-[12px] font-bold bg-gray-200 rounded-md p-2 shadow-md even:bg-white divide-y-2 divide-pinky">
                   <div className="flex justify-between">
                     <p>
-                      <span className="text-gray-600">ID:</span> {order?.id}
+                      <span className="text-gray-600">Order ID:</span>{" "}
+                      {order?.id}
                     </p>
                     <p>
                       <span className="text-gray-600">Date:</span> {order?.date}
