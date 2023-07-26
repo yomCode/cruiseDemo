@@ -10,6 +10,7 @@ const DashboardRoutes = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
+        <Route path="/" element={<Dashboard />} />
         <Route path="/home" element={<Dashboard />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/transactions" element={<Transactions />} />

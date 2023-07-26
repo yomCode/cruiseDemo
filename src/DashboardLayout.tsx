@@ -6,10 +6,11 @@ import DashboardRoutes from "./Routes/DashboardRoutes";
 
 const DashboardLayout = () => {
   const path = useLocation()?.pathname.replaceAll("/", "");
-  const formattedPathName = path === "home" ? "DASHBOARD" : path?.toUpperCase();
+  const formattedPathName =
+    path === "home" || "" || "/" ? "DASHBOARD" : path?.toUpperCase();
   return (
     <div>
-      <div className="flex w-full h-screen">
+      <div className="flex w-full h-full md:overflow-y-hidden">
         <Sidebar />
         <div className="w-full h-screen">
           <DashboardNav page={formattedPathName} />

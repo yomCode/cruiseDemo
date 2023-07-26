@@ -42,7 +42,7 @@ const PaginatedData = <T,>({
         previousLabel="< Prev"
         renderOnZeroPageCount={null}
         activeClassName="active_page"
-        className="w-[400px] font-bold flex justify-center gap-2 mt-4 cursor-pointer"
+        className="max-w-[400px] w-[300px] font-bold flex justify-center gap-2 mt-4 cursor-pointer"
       />
     </>
   );

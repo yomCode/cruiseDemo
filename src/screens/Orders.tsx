@@ -85,9 +85,9 @@ const Orders = () => {
 
   return (
     <div className="w-full p-5">
-      <div className="h-[80px] border-b-4 flex justify-between items-center">
+      <div className="border-b-4 flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center p-4 gap-2">
         {/* Search box */}
-        <div className="relative w-[400px]">
+        <div className="relative max-w-[400px]">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
               className="w-4 h-4 text-gray-500"
@@ -114,10 +114,10 @@ const Orders = () => {
             required
           />
         </div>
-        <div className="flex justify-between items-center w-full max-w-[600px] p-4">
+        <div className="flex justify-start items-center max-w-[600px] gap-8">
           {/* Filter method */}
           <div className="flex flex-col text-[12px]">
-            <label>Filter By: </label>
+            <label className="font-bold">Filter By: </label>
             <select
               value={filterMethod}
               onChange={(e) => setFilterMethod(e.target.value)}
@@ -129,7 +129,7 @@ const Orders = () => {
             </select>
           </div>
           <div className="flex flex-col text-[12px]">
-            <label>
+            <label className="font-bold">
               {filterMethod === "customer"
                 ? "Customer"
                 : filterMethod === "status"
@@ -141,12 +141,14 @@ const Orders = () => {
               type="search"
               value={filterValue}
               onChange={(e) => setFilterValue(e.target.value)}
-              className="w-[300px] p-2 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 outline-none"
+              className="max-w-[300px] p-2 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 outline-none"
             />
           </div>
         </div>
       </div>
-      <div className="w-full h-[calc(100vh-200px)] overflow-auto">
+      <div
+        className={`hidden md:block w-full h-[calc(100vh-200px)] overflow-auto`}
+      >
         <table className="w-full text-center table-fixed">
           <thead>
             <tr className="rounded-md shadow-md h-[40px]">
@@ -204,6 +206,64 @@ const Orders = () => {
             />
           </tbody>
         </table>
+      </div>
+      <div className="flex md:hidden flex-col gap-2 py-4">
+        <PaginatedData<OrderProps>
+          itemsPerPage={10}
+          items={formattedData}
+          renderItem={(order: OrderProps) => {
+            return (
+              <>
+                <div className="w-full h-[80px] flex flex-col justify-between text-[12px] font-bold bg-gray-200 rounded-md p-2 shadow-md even:bg-white divide-y-2 divide-pinky">
+                  <div className="flex justify-between">
+                    <p>
+                      <span className="text-gray-600">ID:</span> {order?.id}
+                    </p>
+                    <p>
+                      <span className="text-gray-600">Date:</span> {order?.date}
+                    </p>
+                    <p
+                      className={`${
+                        order?.status === "pending"
+                          ? "text-[red]"
+                          : order?.status === "shipped"
+                          ? "text-[purple]"
+                          : order?.status === "delivered"
+                          ? "text-[green]"
+                          : ""
+                      }`}
+                    >
+                      <span className="text-gray-600">Status:</span>{" "}
+                      {order?.status?.slice(0, 1).toUpperCase() +
+                        order?.status?.slice(1).toLowerCase()}
+                    </p>
+                  </div>
+                  <div className="basis-2 flex flex-col justify-between">
+                    <p>
+                      <span className="text-gray-600">Product: </span>
+                      {order?.productName}
+                    </p>
+                    <p>
+                      <span className="text-gray-600">Customer: </span>
+                      {order?.customerName}
+                    </p>
+                  </div>
+                </div>
+                {showOrderDetails && (
+                  <div className="w-full h-[calc(100vh-320px)] flex flex-col justify-center items-center bg-[#dbdbdb] absolute top-0 left-0 opacity-25">
+                    <Order orderId={clickedOrderId} />
+                    <button
+                      onClick={() => setShowOrderDetails(!showOrderDetails)}
+                      className="bg-pinky py-2 px-4 rounded-md text-white font-bold mt-4 hover:bg-[#f79cae]"
+                    >
+                      Close X
+                    </button>
+                  </div>
+                )}
+              </>
+            );
+          }}
+        />
       </div>
     </div>
   );
