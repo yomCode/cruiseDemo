@@ -8,12 +8,20 @@ interface Props {
 
 const DashboardNav = ({ page }: Props) => {
   const [dropMenu, setDropMenu] = React.useState<boolean>(false);
+  const [activeTab, setActiveTab] = React.useState<string>("Dashboard");
 
   const path = useLocation()?.pathname.replaceAll("/", "");
   const formattedPathName =
-    path === "home" || "" || "/"
+    path === "home" || ""
       ? "Dashboard"
       : path.slice(0, 1).toUpperCase() + path.slice(1);
+
+  React.useEffect(() => {
+    setActiveTab(formattedPathName);
+  }, [path]);
+  console.log(activeTab);
+  console.log(formattedPathName);
+
   return (
     <div className="w-full h-[50px] flex items-center justify-between font-bold text-2xl bg-[#e2e2e2] py-3 px-5 ">
       {page.toUpperCase()}
@@ -23,7 +31,7 @@ const DashboardNav = ({ page }: Props) => {
           type="button"
           onClick={() => setDropMenu(!dropMenu)}
         >
-          {formattedPathName}
+          {activeTab}
           <svg
             className="w-2.5 h-2.5 ml-2.5"
             aria-hidden="true"
@@ -48,13 +56,8 @@ const DashboardNav = ({ page }: Props) => {
           <ul className="py-2 text-sm text-gray-700 flex flex-col gap-2">
             {DashboardMenu()?.map((item) => {
               return (
-                <Link to={item?.path}>
-                  <li
-                    key={item?.name.toLowerCase()}
-                    onClick={() => setDropMenu(!dropMenu)}
-                  >
-                    {item?.name}
-                  </li>
+                <Link key={item?.name.toLowerCase()} to={item?.path}>
+                  <li onClick={() => setDropMenu(!dropMenu)}>{item?.name}</li>
                 </Link>
               );
             })}
