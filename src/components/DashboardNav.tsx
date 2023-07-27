@@ -19,8 +19,6 @@ const DashboardNav = ({ page }: Props) => {
   React.useEffect(() => {
     setActiveTab(formattedPathName);
   }, [path]);
-  console.log(activeTab);
-  console.log(formattedPathName);
 
   return (
     <div className="w-full h-[50px] flex items-center justify-between font-bold text-2xl bg-[#e2e2e2] py-3 px-5 ">
